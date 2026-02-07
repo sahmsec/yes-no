@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Will You Be Mine? 💖</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-pink-400 via-rose-400 to-pink-500 flex items-center justify-center overflow-hidden">
+
+  <!-- Floating Hearts -->
+  <div id="hearts" class="fixed inset-0 pointer-events-none"></div>
+
+  <!-- Card -->
+  <div id="card" class="relative bg-white/80 backdrop-blur-xl rounded-3xl shadow-2xl p-6 sm:p-10 w-[92%] max-w-md text-center">
+    
+    <div class="text-5xl mb-2">🤗 🌸 💞</div>
+    <h1 class="text-2xl sm:text-3xl font-extrabold text-pink-600 mb-2">
+      Will you be mine?
+    </h1>
+    <p class="text-gray-600 mb-6">
+      Choose carefully… one option is shy 😆
+    </p>
+
+    <div id="arena" class="relative h-28">
+      <button id="yesBtn"
+        class="absolute left-1/2 -translate-x-full bg-pink-500 hover:bg-pink-600 active:scale-95 transition text-white font-bold px-6 py-3 rounded-full shadow-lg">
+        Yes 💖
+      </button>
+
+      <button id="noBtn"
+        class="absolute left-1/2 translate-x-4 bg-indigo-200 hover:bg-indigo-300 transition text-indigo-900 font-bold px-6 py-3 rounded-full shadow-lg">
+        No 🙈
+      </button>
+    </div>
+  </div>
+
+  <!-- Success Modal -->
+  <div id="modal" class="fixed inset-0 bg-black/40 backdrop-blur-sm hidden items-center justify-center z-50">
+    <div class="bg-white rounded-3xl shadow-2xl p-6 sm:p-8 w-[90%] max-w-md text-center animate-[pop_0.3s_ease-out]">
+      <div class="text-4xl mb-2">🎉💘</div>
+      <h2 class="text-xl font-extrabold text-pink-600 mb-2">Yay! She said YES 💞</h2>
+      <p class="text-gray-700 text-sm leading-relaxed">
+	congratulations Sanjida <3333 <br>
+        This moment just became a beautiful memory ✨  
+        Thank you for choosing me today, tomorrow, and forever.  
+        <br />
+        <span class="font-semibold">I love you endlessly ❤️</span>
+      </p>
+      <button id="closeModal"
+        class="mt-5 bg-pink-500 hover:bg-pink-600 text-white font-bold px-5 py-2 rounded-full shadow-md">
+        Close 💗
+      </button>
+    </div>
+  </div>
+
+  <script>
+    const noBtn = document.getElementById("noBtn");
+    const yesBtn = document.getElementById("yesBtn");
+    const arena = document.getElementById("arena");
+    const modal = document.getElementById("modal");
+    const closeModal = document.getElementById("closeModal");
+    const hearts = document.getElementById("hearts");
+
+    function moveNoButton() {
+      const rect = arena.getBoundingClientRect();
+      const btnRect = noBtn.getBoundingClientRect();
+
+      const x = Math.random() * (rect.width - btnRect.width);
+      const y = Math.random() * (rect.height - btnRect.height);
+
+      noBtn.style.left = x + "px";
+      noBtn.style.top = y + "px";
+    }
+
+    noBtn.addEventListener("mouseenter", moveNoButton);
+    noBtn.addEventListener("touchstart", moveNoButton);
+
+    yesBtn.addEventListener("click", () => {
+      // Hide buttons
+      yesBtn.classList.add("hidden");
+      noBtn.classList.add("hidden");
+
+      // Show modal
+      modal.classList.remove("hidden");
+      modal.classList.add("flex");
+
+      burstHearts();
+    });
+
+    closeModal.addEventListener("click", () => {
+      modal.classList.add("hidden");
+      modal.classList.remove("flex");
+    });
+
+    // Floating hearts background
+    function createHeart() {
+      const heart = document.createElement("div");
+      heart.innerText = ["💖","💘","✨","🌸"][Math.floor(Math.random()*4)];
+      heart.className = "absolute text-xl opacity-70";
+      heart.style.left = Math.random() * 100 + "vw";
+      heart.style.bottom = "-20px";
+      heart.style.animation = `floatUp ${3 + Math.random() * 3}s linear`;
+
+      hearts.appendChild(heart);
+      setTimeout(() => heart.remove(), 6000);
+    }
+    setInterval(createHeart, 700);
+
+    const style = document.createElement("style");
+    style.innerHTML = `
+      @keyframes floatUp {
+        from { transform: translateY(0) scale(.8); opacity: 0; }
+        to { transform: translateY(-110vh) scale(1.2); opacity: 1; }
+      }
+      @keyframes pop {
+        from { transform: scale(.8); opacity: 0; }
+        to { transform: scale(1); opacity: 1; }
+      }
+    `;
+    document.head.appendChild(style);
+
+    function burstHearts() {
+      for (let i = 0; i < 18; i++) {
+        const h = document.createElement("div");
+        h.innerText = ["💖","✨","💘","🌸"][Math.floor(Math.random()*4)];
+        h.className = "fixed text-2xl";
+        h.style.left = Math.random() * 100 + "vw";
+        h.style.top = "50vh";
+        h.style.transition = "transform 1s ease, opacity 1s ease";
+        document.body.appendChild(h);
+
+        requestAnimationFrame(() => {
+          h.style.transform = `translate(${(Math.random()-0.5)*240}px, -260px) rotate(${Math.random()*360}deg)`;
+          h.style.opacity = "0";
+        });
+
+        setTimeout(() => h.remove(), 1200);
+      }
+    }
+  </script>
+</body>
+</html>
